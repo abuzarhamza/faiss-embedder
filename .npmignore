@@ -1,3 +1,4 @@
+# Rules from: /Users/abuzarhamza/Desktop/workspaceGithub/S8 Share/faiss_index_gen/.gitignore
 # Dependencies
 node_modules/
 
@@ -44,3 +45,8 @@ build/
 *.temp
 .cache/
 
+
+
+# npmignore - content above this line is automatically generated and modifications may be omitted
+# see npmjs.com/npmignore for more details.
+test/
