@@ -5,11 +5,9 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "faiss-gen": "./cli.js",
-    "faiss-check": "./scripts/check-ollama.js"
+    "faiss-gen": "./cli.js"
   },
   "scripts": {
-    "check": "node scripts/check-ollama.js",
     "test": "mocha 'test/**/*.test.js' --timeout 60000",
     "test:docCache": "mocha 'test/docCache.test.js'",
     "test:embedder": "mocha 'test/embedder.test.js' --timeout 60000",
