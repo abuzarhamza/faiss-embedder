@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# FAISS output files (generated)
+faiss_output/
+*.bin
+index_metadata.json
+doc_index_cache.json
+metadata.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Build
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+

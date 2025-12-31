@@ -1,0 +1,64 @@
+{
+  "name": "faiss-embedder",
+  "version": "1.0.0",
+  "description": "Generate FAISS indexes using Ollama nomic-embed-text embeddings",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "faiss-gen": "./cli.js",
+    "faiss-check": "./scripts/check-ollama.js"
+  },
+  "scripts": {
+    "check": "node scripts/check-ollama.js",
+    "test": "mocha 'test/**/*.test.js' --timeout 60000",
+    "test:docCache": "mocha 'test/docCache.test.js'",
+    "test:embedder": "mocha 'test/embedder.test.js' --timeout 60000",
+    "test:faiss": "mocha 'test/faissIndexer.test.js' --timeout 60000",
+    "postinstall": "echo '\n⚠️  Ollama required! Run: npx faiss-check\n'"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./docCache": "./lib/docCache.js",
+    "./faiss": "./lib/faissIndexer.js",
+    "./embedder": "./lib/embedder.js"
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "lib/",
+    "scripts/",
+    "README.md"
+  ],
+  "keywords": [
+    "faiss",
+    "embeddings",
+    "ollama",
+    "nomic-embed-text",
+    "vector-search",
+    "semantic-search",
+    "rag"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "faiss-node": "^0.5.1",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.4.0",
+    "sinon": "^17.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "ollama": "Ollama must be installed separately. See https://ollama.ai"
+  },
+  "peerDependenciesMeta": {
+    "ollama": {
+      "optional": false
+    }
+  }
+}
