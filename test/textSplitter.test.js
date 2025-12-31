@@ -173,7 +173,11 @@ class MyClass {
 			const options = { chunkSize: 200, chunkOverlap: 30 };
 
 			// Act
-			const chunks = await splitTextByFileType(sampleText, filePath, options);
+			const chunks = await splitTextByFileType(
+				sampleText,
+				filePath,
+				options
+			);
 
 			// Assert
 			expect(chunks).to.be.an("array");
@@ -186,7 +190,11 @@ class MyClass {
 			const options = { chunkSize: 200, chunkOverlap: 30 };
 
 			// Act
-			const chunks = await splitTextByFileType(codeText, filePath, options);
+			const chunks = await splitTextByFileType(
+				codeText,
+				filePath,
+				options
+			);
 
 			// Assert
 			expect(chunks).to.be.an("array");
@@ -216,7 +224,11 @@ def goodbye():
 			const options = { chunkSize: 200, chunkOverlap: 30 };
 
 			// Act
-			const chunks = await splitTextByFileType(sampleText, filePath, options);
+			const chunks = await splitTextByFileType(
+				sampleText,
+				filePath,
+				options
+			);
 
 			// Assert
 			expect(chunks).to.be.an("array");
