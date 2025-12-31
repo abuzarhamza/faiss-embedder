@@ -28,7 +28,8 @@
     "cli.js",
     "lib/",
     "scripts/",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "faiss",
@@ -39,7 +40,15 @@
     "semantic-search",
     "rag"
   ],
-  "author": "",
+  "author": "Abuzar Hamza",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abuzarhamza/faiss-embedder"
+  },
+  "homepage": "https://github.com/abuzarhamza/faiss-embedder#readme",
+  "bugs": {
+    "url": "https://github.com/abuzarhamza/faiss-embedder/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "@langchain/textsplitters": "^1.0.1",
@@ -55,12 +64,6 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "peerDependencies": {
-    "ollama": "Ollama must be installed separately. See https://ollama.ai"
-  },
-  "peerDependenciesMeta": {
-    "ollama": {
-      "optional": false
-    }
-  }
+  "os": ["darwin", "linux", "win32"],
+  "cpu": ["x64", "arm64"]
 }
