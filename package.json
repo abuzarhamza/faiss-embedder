@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "faiss-gen": "./cli.js"
+    "faiss-gen": "cli.js"
   },
   "scripts": {
     "test": "mocha 'test/**/*.test.js' --timeout 60000",
@@ -41,7 +41,7 @@
   "author": "Abuzar Hamza",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abuzarhamza/faiss-embedder"
+    "url": "git+https://github.com/abuzarhamza/faiss-embedder.git"
   },
   "homepage": "https://github.com/abuzarhamza/faiss-embedder#readme",
   "bugs": {
@@ -62,6 +62,13 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "os": ["darwin", "linux", "win32"],
-  "cpu": ["x64", "arm64"]
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
 }
