@@ -20,8 +20,16 @@ export {
 	detectChanges,
 	getFileHash,
 } from "./lib/docCache.js";
+export {
+	splitText,
+	splitTextByFileType,
+	chunkText,
+	createSplitter,
+	SPLITTER_TYPES,
+} from "./lib/textSplitter.js";
 
 import { FaissIndexer } from "./lib/faissIndexer.js";
+import { splitTextByFileType } from "./lib/textSplitter.js";
 import fs from "fs";
 import path from "path";
 
@@ -75,10 +83,11 @@ export async function query(indexDir, queryText, options = {}) {
  * @param {string} outputDir - Output directory for index files
  * @param {Object} [options]
  * @param {number} [options.chunkSize=1500] - Chunk size
- * @param {number} [options.overlap=200] - Overlap between chunks
+ * @param {number} [options.chunkOverlap=200] - Overlap between chunks
  * @param {string[]} [options.extensions=['.txt','.md']] - File extensions
  * @param {boolean} [options.recursive=false] - Scan recursively
  * @param {string} [options.model='nomic-embed-text'] - Embedding model
+ * @param {string} [options.splitter='recursive'] - Splitter type (recursive, character, markdown, code)
  * @param {Function} [options.onProgress] - Progress callback(current, total)
  * @returns {Promise<{vectors, time}>}
  *
@@ -89,11 +98,12 @@ export async function query(indexDir, queryText, options = {}) {
 export async function build(inputDir, outputDir, options = {}) {
 	const {
 		chunkSize = 1500,
-		overlap = 200,
+		chunkOverlap = 200,
 		extensions = [".txt", ".md"],
 		recursive = false,
 		model = "nomic-embed-text",
 		baseUrl = "http://localhost:11434",
+		splitter = "recursive",
 		onProgress,
 	} = options;
 
@@ -109,7 +119,13 @@ export async function build(inputDir, outputDir, options = {}) {
 	for (const filePath of files) {
 		const relativePath = path.relative(inputDir, filePath);
 		const content = fs.readFileSync(filePath, "utf-8");
-		const chunks = chunkText(content, chunkSize, overlap);
+
+		// Use LangChain text splitter
+		const chunks = await splitTextByFileType(content, filePath, {
+			chunkSize,
+			chunkOverlap,
+			type: splitter,
+		});
 
 		for (let i = 0; i < chunks.length; i++) {
 			const baseId = relativePath
@@ -136,21 +152,6 @@ export async function build(inputDir, outputDir, options = {}) {
 
 	const indexPath = path.join(outputDir, "index.bin");
 	return indexer.build(metadataPath, indexPath, onProgress);
-}
-
-// Helper: chunk text
-function chunkText(text, chunkSize, overlap) {
-	const chunks = [];
-	let start = 0;
-
-	while (start < text.length) {
-		const end = Math.min(start + chunkSize, text.length);
-		chunks.push(text.slice(start, end));
-		start = end - overlap;
-		if (start + overlap >= text.length) break;
-	}
-
-	return chunks;
 }
 
 // Helper: get files from directory

@@ -20,7 +20,8 @@
     ".": "./index.js",
     "./docCache": "./lib/docCache.js",
     "./faiss": "./lib/faissIndexer.js",
-    "./embedder": "./lib/embedder.js"
+    "./embedder": "./lib/embedder.js",
+    "./splitter": "./lib/textSplitter.js"
   },
   "files": [
     "index.js",
@@ -41,6 +42,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@langchain/textsplitters": "^1.0.1",
     "axios": "^1.6.0",
     "faiss-node": "^0.5.1",
     "yargs": "^17.7.2"

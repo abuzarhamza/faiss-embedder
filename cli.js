@@ -22,6 +22,7 @@ import { hideBin } from "yargs/helpers";
 import { generateDocCache } from "./lib/docCache.js";
 import { FaissIndexer } from "./lib/faissIndexer.js";
 import { OllamaEmbedder } from "./lib/embedder.js";
+import { splitTextByFileType, SPLITTER_TYPES } from "./lib/textSplitter.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -422,6 +423,14 @@ const argv = yargs(hideBin(process.argv))
 		description: "Ollama server URL",
 		default: "http://localhost:11434",
 	})
+	.option("splitter", {
+		alias: "s",
+		type: "string",
+		description:
+			"Text splitter type (recursive, character, markdown, code)",
+		choices: ["recursive", "character", "markdown", "code"],
+		default: "recursive",
+	})
 	.option("verbose", {
 		alias: "v",
 		type: "boolean",
@@ -453,22 +462,7 @@ const argv = yargs(hideBin(process.argv))
 	.strict()
 	.parse();
 
-/**
- * Chunk text into smaller pieces
- */
-function chunkText(text, chunkSize, overlap) {
-	const chunks = [];
-	let start = 0;
-
-	while (start < text.length) {
-		const end = Math.min(start + chunkSize, text.length);
-		chunks.push(text.slice(start, end));
-		start = end - overlap;
-		if (start + overlap >= text.length) break;
-	}
-
-	return chunks;
-}
+// Text chunking now uses @langchain/textsplitters via lib/textSplitter.js
 
 /**
  * Read file content
@@ -543,6 +537,7 @@ async function runBuild(argv) {
 		indexType: argv["index-type"],
 		model: argv.model,
 		ollamaUrl: argv["ollama-url"],
+		splitter: argv.splitter,
 		verbose: argv.verbose,
 	};
 
@@ -570,6 +565,7 @@ async function runBuild(argv) {
 	console.log(`  Output:      ${options.outputDir}`);
 	console.log(`  Chunk Size:  ${options.chunkSize}`);
 	console.log(`  Overlap:     ${options.overlap}`);
+	console.log(`  Splitter:    ${options.splitter} (LangChain)`);
 	console.log(`  Extensions:  ${options.extensions.join(", ")}`);
 	console.log(`  Recursive:   ${options.recursive}`);
 	console.log(`  Index Type:  ${options.indexType}`);
@@ -626,7 +622,12 @@ async function runBuild(argv) {
 			continue;
 		}
 
-		const chunks = chunkText(content, options.chunkSize, options.overlap);
+		// Use LangChain text splitter
+		const chunks = await splitTextByFileType(content, filePath, {
+			chunkSize: options.chunkSize,
+			chunkOverlap: options.overlap,
+			type: options.splitter,
+		});
 		console.log(`   📄 ${relativePath}: ${chunks.length} chunk(s)`);
 
 		for (let i = 0; i < chunks.length; i++) {
